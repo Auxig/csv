@@ -1,3 +1,6 @@
+import Utils.JsonUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.supercsv.io.CsvMapReader;
 import org.supercsv.io.ICsvMapReader;
 import org.supercsv.prefs.CsvPreference;
@@ -19,7 +22,7 @@ public class DatapointsSuperCSV {
             FileInputStream in = new FileInputStream("/home/auxi/Documentos/develop/csv/src/main/resources/datapoints_response.csv");
             InputStreamReader input = new InputStreamReader(in);
 
-            ICsvMapReader mapReaderRespuesta = new CsvMapReader(input, (new CsvPreference.Builder('"', 59, "\r\n")).build());
+            ICsvMapReader mapReaderRespuesta = new CsvMapReader(input, (new CsvPreference.Builder('\'', 59, "\r\n")).build());
             // the header columns are used as the keys to the Map
             final String[] header = mapReaderRespuesta.getHeader(true);
 
@@ -29,6 +32,9 @@ public class DatapointsSuperCSV {
             System.out.println("*****************************************************************************************");
             System.out.println("DATAPOINTS DE LA RESPUESTA A LA PETICIÓN");
             while( (customerMapRespuesta = mapReaderRespuesta.read(header)) != null ) {
+                if (JsonUtils.convertStringToJSONObject(customerMapRespuesta.get("value")) != null) {
+                    System.out.println("El valor " + customerMapRespuesta.get("value") + " es un json");
+                }
                 System.out.println(customerMapRespuesta);
                 listmapRespuesta.add(customerMapRespuesta);
             }
