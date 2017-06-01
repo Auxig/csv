@@ -1,0 +1,11 @@
+target/
+.project
+.settings
+.classpath
+.idea
+*.iml
+*~
+logs/
+reports/
+LOG_FILE_FOR_UNIT_TESTING
+
