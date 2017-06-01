@@ -1,4 +1,4 @@
-Codigo, Nombres, Apellidos, Correo
-2001, Jorge Luis, Garcia Sifuentes, jlgarcias@gmail.com
-2002, Miguel Jose, Guevara Martinez, mguevara@yahoo.com
-2003, Juan Carlos, Mendoza Cruz, jcmendoza@hotmail.com
+Codigo;Nombres;Apellidos;Correo
+2001;Jorge Luis;Garcia Sifuentes;jlgarcias@gmail.com
+2002;Miguel Jose;Guevara Martinez;mguevara@yahoo.com
+2003;Juan Carlos;Mendoza Cruz;jcmendoza@hotmail.com
