@@ -1,4 +1,5 @@
 import Utils.JsonUtils;
+import org.apache.commons.collections.map.HashedMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,9 +51,7 @@ public class DatapointsSuperCSV {
             final String[] header = mapReaderRespuesta.getHeader(true);
 
             List<Map<String, Object>> listmapRespuestaObject = new LinkedList<Map<String, Object>>();
-//            List<Map<String, Object>> listmapRespuestaObjectConJson = new LinkedList<Map<String, Object>>();
             Map<String, Object> customerMapRespuesta = new HashMap<String, Object>();
-//            Map<String, Object> customerMapRespuestaConJson = new HashMap<String, Object>();
             System.out.println("*****************************************************************************************");
             System.out.println("DATAPOINTS DE LA RESPUESTA A LA PETICIÓN");
             while( (customerMapRespuesta = mapReaderRespuesta.read(header, getProcessors())) != null ) {
@@ -79,10 +78,10 @@ public class DatapointsSuperCSV {
 
                 System.out.println(customerMapRespuesta);
                 listmapRespuestaObject.add(customerMapRespuesta);
-//                listmapRespuestaObjectConJson.add(customerMapRespuestaConJson);
             }
             System.out.println("*****************************************************************************************");
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             // Simulación de lo esperado en el escenario para comprobar que está contenido en la respuesta anterior
             ICsvMapReader mapReaderEsperado = new CsvMapReader(new FileReader("/home/auxi/develop/csv/src/main/resources/datapoints_expected.csv"), (new CsvPreference.Builder('\'', 59, "\r\n")).build());
@@ -90,7 +89,6 @@ public class DatapointsSuperCSV {
             List<Map<String, Object>> listmapEsperadaObject = new LinkedList<Map<String, Object>>();
             List<Map<String, Object>> listmapEsperadaObjectConJson = new LinkedList<Map<String, Object>>();
             Map<String, Object> customerMapEsperado = new HashMap<String, Object>();
-//            Map<String, Object> customerMapEsperadoJson = new HashMap<String, Object>();;
             System.out.println("*****************************************************************************************");
             System.out.println("DATAPOINTS QUE ESPERAMOS");
             while( (customerMapEsperado = mapReaderEsperado.read(headerEsperada, getProcessors())) != null ) {
@@ -121,68 +119,86 @@ public class DatapointsSuperCSV {
             System.out.println("*****************************************************************************************");
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             if (listmapEsperadaObject.size() > listmapRespuestaObject.size()) {
                 System.out.println("ERROR .- Hay más datapoints esperados que recibidos");
             } else {
                 for (Map<String, Object> mapEsperado: listmapEsperadaObject){
                     if (mapEsperado.get("value").getClass() == JSONObject.class) {
-                        boolean igualesConJson = false;
+
                         System.out.println("*****************************************************************************************");
                         System.out.println("El datapoint esperado contiene un JSON");
+
+                        Map<String, Object> mapAuxEsperado = new HashedMap();
+                        mapAuxEsperado.putAll(mapEsperado);
+                        mapAuxEsperado.remove("value");
+
+                        List<Map<String, Object>> listMapRespuestaAux = new LinkedList<Map<String, Object>>();
+                        Map<String, Object> mapAuxRespuesta = new HashedMap();
                         for (Map<String, Object> mapRespuesta: listmapRespuestaObject){
-                            Set<String> claves = mapEsperado.keySet();
-                            for (String c : claves) {
-                                if (!c.equals("value") && !mapEsperado.get(c).equals(mapRespuesta.get(c))){
-                                    igualesConJson = false;
-                                    break;
-                                } else if (!c.equals("value") && mapEsperado.get(c).equals(mapRespuesta.get(c))){
-                                    //Si no coinciden los valores pasar al siguiente elemento de mapRespuesta
-                                    //Hay que controlarlo fuera, porque si no coinciden mapEsperado.get(c).equals(mapRespuesta.get(c)
-                                    //no vamos a entrar en el if
-                                    igualesConJson = true;
-                                    System.out.println("Son iguales las claves " + c + " para el esperado " + mapEsperado.get(c) + " y el de respuesta " + mapRespuesta.get(c));
-                                } else if (c.equals("value") && igualesConJson) {
+
+                            mapAuxRespuesta = new HashedMap();
+                            mapAuxRespuesta.putAll(mapRespuesta);
+                            mapAuxRespuesta.remove("value");
+
+                            listMapRespuestaAux.add(mapAuxRespuesta);
+
+                        }
+
+                        if (listMapRespuestaAux.contains(mapAuxEsperado)) {
+                            System.out.println("El datapoint esperado " + mapEsperado + " DE MOMENTO SI está contenido en la respuesta, hay que mirar el value JSON");
+                            //Es igual por ahora, nos queda por mirar el value en formato json
+
+                            for (int i=0; i < listMapRespuestaAux.size(); i++) {
+                                if (listMapRespuestaAux.get(i).equals(mapAuxEsperado)){
                                     System.out.println("Comparamos JSON");
-                                    JSONObject jsonObjectEsperado = (JSONObject) mapEsperado.get(c);
-                                    JSONObject jsonObjectRespuesta = (JSONObject) mapRespuesta.get(c);
+                                    JSONObject jsonObjectEsperado = (JSONObject) mapEsperado.get("value");
+                                    JSONObject jsonObjectRespuesta = (JSONObject) listmapRespuestaObject.get(i).get("value");
 
                                     if (jsonObjectEsperado != null) {
                                         try {
                                             JSONAssert.assertEquals(jsonObjectEsperado, jsonObjectRespuesta, JSONCompareMode.LENIENT);
                                         } catch (AssertionError e) {
                                             System.out.println("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
-                                             throw new AssertionError("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
+                                            throw new AssertionError("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
                                         }
                                         System.out.println("El datapoint esperado " + mapEsperado + " SI está contenido en la respuesta");
                                     }
-
-
                                 }
                             }
+                        } else {
+                            System.out.println("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
                         }
+
                     } else if (mapEsperado.get("value").getClass() == JSONArray.class) {
-                        boolean igualesConArray = false;
                         System.out.println("*****************************************************************************************");
                         System.out.println("El datapoint esperado contiene un Array");
-                        for (Map<String, Object> mapRespuesta: listmapRespuestaObject) {
-                            Set<String> claves = mapEsperado.keySet();
-                            for (String c : claves) {
-                                if (!c.equals("value") && !mapEsperado.get(c).equals(mapRespuesta.get(c))){
-                                    igualesConArray = false;
-                                    break;
-                                }
-                                else if (!c.equals("value") && mapEsperado.get(c).equals(mapRespuesta.get(c))){
-                                    //Sin no coinciden los valores pasar al siguiente elemento de mapRespuesta
-                                    //Hay que controlarlo fuera, porque si no coinciden mapEsperado.get(c).equals(mapRespuesta.get(c)
-                                    //no vamos a entrar en el if
-                                    igualesConArray = true;
-                                    System.out.println("Son iguales las claves " + c + " para el esperado " + mapEsperado.get(c) + " y el de respuesta " + mapRespuesta.get(c));
-                                } else if (c.equals("value") && igualesConArray) {
+
+                        Map<String, Object> mapAuxEsperado = new HashedMap();
+                        mapAuxEsperado.putAll(mapEsperado);
+                        mapAuxEsperado.remove("value");
+
+                        List<Map<String, Object>> listMapRespuestaAux = new LinkedList<Map<String, Object>>();
+                        Map<String, Object> mapAuxRespuesta = new HashedMap();
+                        for (Map<String, Object> mapRespuesta: listmapRespuestaObject){
+
+                            mapAuxRespuesta = new HashedMap();
+                            mapAuxRespuesta.putAll(mapRespuesta);
+                            mapAuxRespuesta.remove("value");
+
+                            listMapRespuestaAux.add(mapAuxRespuesta);
+                        }
+
+                        if (listMapRespuestaAux.contains(mapAuxEsperado)) {
+                            System.out.println("El datapoint esperado " + mapEsperado + " DE MOMENTO SI está contenido en la respuesta, hay que mirar el value Array");
+                            //Es igual por ahora, nos queda por mirar el value en formato array
+
+                            for (int i=0; i < listMapRespuestaAux.size(); i++) {
+                                if (listMapRespuestaAux.get(i).equals(mapAuxEsperado)) {
                                     System.out.println("Comparamos ARRAY");
-                                    JSONArray arrayObjectEsperado = (JSONArray) mapEsperado.get(c);
-                                    JSONArray arrayObjectRespuesta = (JSONArray) mapRespuesta.get(c);
+                                    JSONArray arrayObjectEsperado = (JSONArray) mapEsperado.get("value");
+                                    JSONArray arrayObjectRespuesta = (JSONArray) listmapRespuestaObject.get(i).get("value");
 
                                     if (arrayObjectEsperado != null) {
                                         try {
@@ -193,11 +209,13 @@ public class DatapointsSuperCSV {
                                         }
                                         System.out.println("El datapoint esperado " + mapEsperado + " SI está contenido en la respuesta");
                                     }
-
-
                                 }
                             }
+
+                        }  else {
+                            System.out.println("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
                         }
+
                     } else {
                         if (listmapRespuestaObject.contains(mapEsperado)) {
                             System.out.println("El datapoint esperado " + mapEsperado + " SI está contenido en la respuesta");
