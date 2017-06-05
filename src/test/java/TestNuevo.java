@@ -162,7 +162,7 @@ public class TestNuevo {
                     //Si la clave que estamos tratando NO tiene valores en la respuesta quiere decir que NO existe en la respuesta un datapoint que coincida con lo que esperamos
                     else {
                         System.out.println("El datapoint no viaja en la respuesta");
-                        throw new AssertionError("El value esperado " + esperadoValues + " NO está contenido en la respuesta");
+                        throw new AssertionError("La clave esperada " + esperadoKey + " NO está contenida en la respuesta");
                     }
                 }
             }

@@ -217,6 +217,8 @@ public class DatapointsSuperCSV {
                         }
 
                     } else {
+                        System.out.println("*****************************************************************************************");
+                        System.out.println("El datapoint esperado NO contiene un Array ni un JSON");
                         if (listmapRespuestaObject.contains(mapEsperado)) {
                             System.out.println("El datapoint esperado " + mapEsperado + " SI está contenido en la respuesta");
                         } else {
