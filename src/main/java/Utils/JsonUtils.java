@@ -32,7 +32,7 @@ public class JsonUtils {
             JSONArray json = new JSONArray(json_str);
             return json;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
             return null;
         }
     }

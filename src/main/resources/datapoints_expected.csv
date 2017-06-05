@@ -1,6 +1,4 @@
 device;datastream;feed;from;at;value
-device_IOT_dp;datastreams.peso.advanced.id;feed1.advanced;2015-12-07T03:30:09Z;2016-03-02T22:50:09Z;80.0
-device_IOT_dp;datastreams.peso.advanced.id;feed1.advanced;2016-10-14T15:30:09Z;2017-06-08T21:56:49Z;120.0
-device_IOT_dp;datastreams.altura.advanced.id;feed2.advanced;2019-12-16T01:16:49Z;2020-08-09T07:43:29Z;120.0
-device_IOT_dp;datastreams.peso.advanced.id;feed1.advanced;2019-12-16T01:16:49Z;2020-08-09T07:43:29Z;150.0
-device_IOT_adv_collection;health.types;feed_adv_1;2015-10-15T09:18:10Z;2015-10-15T09:18:10Z;'{"field1":"text","field2":12}'
+device_value_json;objeto;Manuela;2017-05-25T15:06:00Z;2017-05-25T15:06:00Z;'{"field1":true,"field2":52}'
+device_value_json;objeto;Manuela;2017-05-25T15:07:40Z;2017-05-25T15:07:40Z;'{"field1":["text1","text2"],"field2":32}'
+device_value_json;objeto;Manuela;2017-05-25T15:09:20Z;2017-05-25T15:09:20Z;'{"field2":{"field2":52,"field1":"hola"}}'
