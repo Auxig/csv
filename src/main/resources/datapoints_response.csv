@@ -1,10 +1,5 @@
 device;datastream;feed;from;at;value
-device_value_json;distancia;Paco;2017-05-25T14:57:40Z;2017-05-25T14:57:40Z;4.0
-device_value_json;distancia;Paco;2017-05-25T14:59:20Z;2017-05-25T14:59:20Z;8.0
-device_value_json;distancia;Paco;2017-05-25T15:01:00Z;2017-05-25T15:01:00Z;1.0
-device_value_json;distancia;Paco;2017-05-25T15:02:40Z;2017-05-25T15:02:40Z;3.0
-device_value_json;objeto;Manuela;2017-05-25T15:06:00Z;2017-05-25T15:06:00Z;'{"field1":true,"field2":52}'
-device_value_json;objeto;Manuela;2017-05-25T15:07:40Z;2017-05-25T15:07:40Z;'{"field1":["text1","text2"],"field2":32}'
-device_value_json;objeto;Manuela;2017-05-25T15:09:20Z;2017-05-25T15:09:20Z;'{"field2":{"field1":"hola","field2":52}}'
-device_value_array;objeto;Manuela;2017-05-25T15:07:40Z;2017-05-25T15:07:40Z;["text1",null]
-device_value_array;objeto;Manuela;2017-05-25T15:09:20Z;2017-05-25T15:09:20Z;[["text1",5],{"field1":"text","field2":12}]
+device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;60.0
+device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;80.0
+device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;85.0
+device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;75.0

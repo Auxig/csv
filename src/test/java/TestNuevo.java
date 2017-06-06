@@ -112,7 +112,10 @@ public class TestNuevo {
 
                         //Si el value del csv es de tipo json lo tratamos aqui
                         if (JsonUtils.convertStringToJSONObject(respuestaValues) != null) {
-                            System.out.println("//////////////////////////////////////////////////////////////////////////");
+                            System.out.println("*****************************************************************************************");
+                            System.out.println("\tEl datapoint esperado contiene un JSON");
+                            System.out.println("\tEl datapoint esperado " + esperadoKey + "=" + esperadoValues + " DE MOMENTO SI está contenido en la respuesta, hay que mirar el value JSON");
+//                            System.out.println("//////////////////////////////////////////////////////////////////////////");
                             System.out.println("\tEl valor " + respuestaValues + " es un JSON");
                             System.out.println("\tComparamos JSON");
                             JSONObject jsonObjectEsperado = JsonUtils.convertStringToJSONObject(esperadoValues);
@@ -120,16 +123,19 @@ public class TestNuevo {
                             try {
                                 JSONAssert.assertEquals(jsonObjectEsperado, jsonObjectRespuesta, JSONCompareMode.LENIENT);
                             } catch (AssertionError e) {
-                                System.out.println("\tEl value esperado " + esperadoValues + " NO está contenido en la respuesta");
-                                throw new AssertionError("El value esperado " + esperadoValues + " NO está contenido en la respuesta");
+                                System.out.println("\tEl value esperado " + esperadoValues + " \u001B[1m NO está contenido en la respuesta \033[0m");
+                                throw new AssertionError("El value esperado " + esperadoValues + " \u001B[1m NO está contenido en la respuesta \033[0m");
                             }
-                            System.out.println("\tEl value esperado " + esperadoValues + " SI está contenido en la respuesta " + respuestaValues);
-                            System.out.println("//////////////////////////////////////////////////////////////////////////");
+                            System.out.println("\tEl value esperado " + esperadoValues + "\u001B[1m SI está contenido en la respuesta \033[0m" + respuestaValues);
+//                            System.out.println("//////////////////////////////////////////////////////////////////////////");
 
                         }
                         //Si el value del csv es de tipo array lo tratamos aqui
                         else if (JsonUtils.convertStringToJSONArray(respuestaValues) != null) {
-                            System.out.println("//////////////////////////////////////////////////////////////////////////");
+                            System.out.println("*****************************************************************************************");
+                            System.out.println("\tEl datapoint esperado contiene un ARRAY");
+                            System.out.println("\tEl datapoint esperado " +esperadoKey + "=" + esperadoValues + " DE MOMENTO SI está contenido en la respuesta, hay que mirar el value ARRAY");
+//                            System.out.println("//////////////////////////////////////////////////////////////////////////");
                             System.out.println("\tEl valor " + respuestaValues + " es un array");
                             System.out.println("\tComparamos JSON ARRAY");
 
@@ -139,30 +145,34 @@ public class TestNuevo {
                             try {
                                 JSONAssert.assertEquals(arrayObjectEsperado, arrayObjectRespuesta, JSONCompareMode.LENIENT);
                             } catch (AssertionError e) {
-                                System.out.println("\tEl value esperado " + esperadoValues + " NO está contenido en la respuesta");
-                                throw new AssertionError("\tEl value esperado " + esperadoValues + " NO está contenido en la respuesta");
+                                System.out.println("\tEl value esperado " + esperadoValues + "\u001B[1m NO está contenido en la respuesta \033[0m");
+                                throw new AssertionError("\tEl value esperado " + esperadoValues + " \u001B[1m NO está contenido en la respuesta \033[0m");
                             }
-                            System.out.println("\tEl value esperado " + esperadoValues + " SI está contenido en la respuesta " + respuestaValues);
-                            System.out.println("//////////////////////////////////////////////////////////////////////////");
+                            System.out.println("\tEl value esperado " + esperadoValues + " \u001B[1m SI está contenido en la respuesta \033[0m " + respuestaValues);
+//                            System.out.println("//////////////////////////////////////////////////////////////////////////");
 
                         }
                         //Si el value del csv no es json ni array lo tratamos aqui
                         else {
-                            System.out.println("//////////////////////////////////////////////////////////////////////////");
+                            System.out.println("*****************************************************************************************");
+                            System.out.println("\tEl datapoint esperado NO contiene un ARRAY ni un JSON");
+                            System.out.println("\tEl datapoint esperado " +esperadoKey + "=" + esperadoValues + " DE MOMENTO SI está contenido en la respuesta, hay que mirar el value");
+//                            System.out.println("//////////////////////////////////////////////////////////////////////////");
                             System.out.println("\tEl valor " + respuestaValues + " no es del tipo JSON ni ARRAY");
                             if (!(respuestaValues.equals(mapEsperado.get(esperadoKey))) ) {
-                                System.out.println("\tEl value esperado " + esperadoValues + " NO está contenido en la respuesta");
-                                throw new AssertionError("\tEl value esperado " + esperadoValues + " NO está contenido en la respuesta");
+                                System.out.println("\tEl value esperado " + esperadoValues + " \u001B[1m NO está contenido en la respuesta \033[0m");
+                                throw new AssertionError("\tEl value esperado " + esperadoValues + " \u001B[1m NO está contenido en la respuesta \033[0m");
                             } else {
-                                System.out.println("\tEl value esperado " + esperadoValues + " SI está contenido en la respuesta " + respuestaValues);
+                                System.out.println("\tEl value esperado " + esperadoValues + " \u001B[1m SI está contenido en la respuesta \033[0m " + respuestaValues);
                             }
-                            System.out.println("//////////////////////////////////////////////////////////////////////////");
+//                            System.out.println("//////////////////////////////////////////////////////////////////////////");
                         }
                     }
                     //Si la clave que estamos tratando NO tiene valores en la respuesta quiere decir que NO existe en la respuesta un datapoint que coincida con lo que esperamos
                     else {
-                        System.out.println("El datapoint no viaja en la respuesta");
-                        throw new AssertionError("La clave esperada " + esperadoKey + " NO está contenida en la respuesta");
+                        System.out.println("¡¡¡NO ENCONTRADA!!!!");
+                        System.out.println("El datapoint " + esperadoKey + "=" + esperadoValues + " \u001B[1m NO viaja en la respuesta \033[0m");
+                        throw new AssertionError("La clave esperada " + esperadoKey + " \u001B[1m NO está contenido en la respuesta \033[0m");
                     }
                 }
             }
