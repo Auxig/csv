@@ -83,9 +83,20 @@ public class DatapointsSuperCSV {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            // Simulación de lo esperado en el escenario para comprobar que está contenido en la respuesta anterior
+//            String expected_str = "device;datastream;feed;from;at;value\n" +
+//                    "device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;60.0\n" +
+//                    "device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;80.0\n" +
+//                    "device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;85.0\n" +
+//                    "device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;75.0";
+//
+//            StringReader fileReader = null;
+//            fileReader = new StringReader(expected_str);
+
             ICsvMapReader mapReaderEsperado = new CsvMapReader(new FileReader("/home/auxi/develop/csv/src/main/resources/datapoints_expected.csv"), (new CsvPreference.Builder('\'', 59, "\r\n")).build());
-            final String[] headerEsperada = mapReaderEsperado.getHeader(true);
+
+            // Simulación de lo esperado en el escenario para comprobar que está contenido en la respuesta anterior
+//            ICsvMapReader mapReaderEsperado = new CsvMapReader(fileReader, (new CsvPreference.Builder('\'', 59, "\r\n")).build());
+            String[] headerEsperada = mapReaderEsperado.getHeader(true);
             List<Map<String, Object>> listmapEsperadaObject = new LinkedList<Map<String, Object>>();
             List<Map<String, Object>> listmapEsperadaObjectConJson = new LinkedList<Map<String, Object>>();
             Map<String, Object> customerMapEsperado = new HashMap<String, Object>();
@@ -150,22 +161,36 @@ public class DatapointsSuperCSV {
                             System.out.println("El datapoint esperado " + mapEsperado + " DE MOMENTO SI está contenido en la respuesta, hay que mirar el value JSON");
                             //Es igual por ahora, nos queda por mirar el value en formato json
 
+                            boolean found = false;
                             for (int i=0; i < listMapRespuestaAux.size(); i++) {
                                 if (listMapRespuestaAux.get(i).equals(mapAuxEsperado)){
                                     System.out.println("Comparamos JSON");
                                     JSONObject jsonObjectEsperado = (JSONObject) mapEsperado.get("value");
-                                    JSONObject jsonObjectRespuesta = (JSONObject) listmapRespuestaObject.get(i).get("value");
+                                    if (listmapRespuestaObject.get(i).get("value") instanceof JSONObject) {
+                                        JSONObject jsonObjectRespuesta = (JSONObject) listmapRespuestaObject.get(i).get("value");
 
-                                    if (jsonObjectEsperado != null) {
-                                        try {
-                                            JSONAssert.assertEquals(jsonObjectEsperado, jsonObjectRespuesta, JSONCompareMode.LENIENT);
-                                        } catch (AssertionError e) {
-                                            System.out.println("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
-                                            throw new AssertionError("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
+                                        if (jsonObjectEsperado != null) {
+                                            boolean eq = false;
+                                            try {
+                                                JSONAssert.assertEquals(jsonObjectEsperado, jsonObjectRespuesta, JSONCompareMode.LENIENT);
+                                                eq = true;
+                                            } catch (AssertionError e) {
+                                                System.out.println("De momento este no esta contenido, miramos el siguiente de la respuesta");
+                                                found = false;
+                                            }
+                                            if (eq) {
+                                                System.out.println("El datapoint esperado " + mapEsperado + " SI está contenido en la respuesta");
+                                                found = true;
+                                                break;
+                                            }
+
                                         }
-                                        System.out.println("El datapoint esperado " + mapEsperado + " SI está contenido en la respuesta");
                                     }
+
                                 }
+                            }
+                            if (!found) {
+                                System.out.println("The expected line value field " +mapEsperado.get("value") +" in the csv " +mapEsperado+ " isn't contained in the response");
                             }
                         } else {
                             System.out.println("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
@@ -194,22 +219,35 @@ public class DatapointsSuperCSV {
                             System.out.println("El datapoint esperado " + mapEsperado + " DE MOMENTO SI está contenido en la respuesta, hay que mirar el value Array");
                             //Es igual por ahora, nos queda por mirar el value en formato array
 
+                            boolean found = false;
                             for (int i=0; i < listMapRespuestaAux.size(); i++) {
                                 if (listMapRespuestaAux.get(i).equals(mapAuxEsperado)) {
                                     System.out.println("Comparamos ARRAY");
                                     JSONArray arrayObjectEsperado = (JSONArray) mapEsperado.get("value");
-                                    JSONArray arrayObjectRespuesta = (JSONArray) listmapRespuestaObject.get(i).get("value");
+                                    if (listmapRespuestaObject.get(i).get("value") instanceof JSONArray) {
+                                        JSONArray arrayObjectRespuesta = (JSONArray) listmapRespuestaObject.get(i).get("value");
 
-                                    if (arrayObjectEsperado != null) {
-                                        try {
-                                            JSONAssert.assertEquals(arrayObjectEsperado, arrayObjectRespuesta, JSONCompareMode.LENIENT);
-                                        } catch (AssertionError e) {
-                                            System.out.println("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
-                                            throw new AssertionError("El datapoint esperado " + mapEsperado + " NO está contenido en la respuesta");
+                                        if (arrayObjectEsperado != null) {
+                                            boolean eq = false;
+                                            try {
+                                                JSONAssert.assertEquals(arrayObjectEsperado, arrayObjectRespuesta, JSONCompareMode.LENIENT);
+                                                eq = true;
+                                            } catch (AssertionError e) {
+                                                System.out.println("De momento este no esta contenido, miramos el siguiente de la respuesta");
+                                                found = false;
+                                            }
+                                            if (eq) {
+                                                System.out.println("El datapoint esperado " + mapEsperado + " SI está contenido en la respuesta");
+                                                found = true;
+                                                break;
+                                            }
                                         }
-                                        System.out.println("El datapoint esperado " + mapEsperado + " SI está contenido en la respuesta");
                                     }
+
                                 }
+                            }
+                            if (!found) {
+                                System.out.println("No se ha encontrado ninguna línea");
                             }
 
                         }  else {

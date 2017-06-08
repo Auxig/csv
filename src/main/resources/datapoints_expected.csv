@@ -1,5 +1,9 @@
 device;datastream;feed;from;at;value
-device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;60.0
+device_IOT_collection;health.bmi;feed_1;2018-05-14T11:13:43Z;2015-05-14T11:13:43Z;'{"field1":true,"field2":52}'
+device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;'{"field1":["text1","text2"],"field2":322}'
+device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;[["text1",5],{"field1":"text","field2":12}]
 device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;80.0
-device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;85.0
-device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;75.0
+device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;'{"field1":true,"field2":52}'
+device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;60.0
+device_IOT_collection;health.bmi;feed_1;2015-05-14T11:13:43Z;2015-05-14T11:13:43Z;["text1",null]
+
